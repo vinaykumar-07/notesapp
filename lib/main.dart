@@ -5,12 +5,10 @@ import 'package:vinay_app/views/login_views.dart';
 import 'package:vinay_app/views/register_view.dart';
 import 'package:vinay_app/views/verify_email_view.dart';
 import 'firebase_options.dart';
+import 'dart:developer' as devtools show log;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
   runApp(const MyApp());
 }
 
@@ -18,7 +16,6 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    // print('Building');
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -78,17 +75,52 @@ class _NoteViewState extends State<NoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-      title: const Text('Your Notes'),
-      actions: [
-        PopupMenuButton<MenuAction>(
-            onSelected: (value) {},
-            itemBuilder: (context) {
+          title: const Text('Your Notes'),
+          actions: [
+            PopupMenuButton<MenuAction>(onSelected: (value) async {
+              switch (value) {
+                case MenuAction.logout:
+                  final shouldlogout = await showLogoutDialog(context);
+                  if (shouldlogout) {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/login/', (_) => false);
+                  }
+                  devtools.log(shouldlogout.toString());
+                  break;
+              }
+            }, itemBuilder: (context) {
               return const [
                 PopupMenuItem<MenuAction>(
                     value: MenuAction.logout, child: Text('logout'))
               ];
             }),
-      ],
-    ));
+          ],
+        ),
+        body: const Text('Hello world'));
   }
+}
+
+Future<bool> showLogoutDialog(BuildContext context) {
+  return showDialog<bool>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('sign out'),
+        content: const Text('Are you sure to sign out?'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('Cancel')),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text('Sign out')),
+        ],
+      );
+    },
+  ).then((value) => value ?? false);
 }

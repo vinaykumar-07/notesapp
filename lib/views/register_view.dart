@@ -1,8 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import '../firebase_options.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -62,7 +59,11 @@ class _RegisterViewState extends State<RegisterView> {
                   print('Email already in use');
                 } else if (e.code == 'invalid-email') {
                   print('invalid email');
-                } else {
+                }
+                // else if (e.code == 'done') {
+                //   print('You have sucessfully registred');
+                // }
+                else {
                   print(e.code);
                 }
               }
