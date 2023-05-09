@@ -4,6 +4,8 @@ import 'dart:developer' as devtools show log;
 
 import 'package:vinay_app/constraints/routes.dart';
 
+import '../utilities/show_error_dialog.dart';
+
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
@@ -55,20 +57,21 @@ class _RegisterViewState extends State<RegisterView> {
                     .createUserWithEmailAndPassword(
                         email: email, password: password);
                 devtools.log(userCredential.toString());
-                 
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'week-password') {
-                devtools.log('week password');
+                  await showErrorDialog(context, 'week password');
                 } else if (e.code == 'email-already-in-use') {
-                devtools.log('Email already in use');
+                  await showErrorDialog(context, 'Email already in use');
                 } else if (e.code == 'invalid-email') {
-                devtools.log('invalid email');
-                }
-                else if (e.code == 'done') {
-                 devtools.log('You have sucessfully registred');
-                }
-                else {
-                 devtools.log(e.code);
+                  await showErrorDialog(context, 'invalid email');
+                } else if (e.code == 'done') {
+                  await showErrorDialog(
+                      context, 'You have sucessfully registred');
+                } else {
+                  await showErrorDialog(
+                    context,
+                    e.toString(),
+                  );
                 }
               }
             },
