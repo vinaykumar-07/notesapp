@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vinay_app/constraints/routes.dart';
 import 'package:vinay_app/views/login_views.dart';
 import 'package:vinay_app/views/register_view.dart';
 import 'package:vinay_app/views/verify_email_view.dart';
@@ -23,9 +24,9 @@ class MyApp extends StatelessWidget {
       ),
       home: const HomePage(),
       routes: {
-        '/login/': (context) => const LoginView(),
-        '/register/': (context) => const RegisterView(),
-        '/notes/': (context) => const NoteView(),
+        loginRout: (context) => const LoginView(),
+        registerRout: (context) => const RegisterView(),
+        notesRout: (context) => const NoteView(),
       },
     );
   }
@@ -84,8 +85,10 @@ class _NoteViewState extends State<NoteView> {
                   final shouldlogout = await showLogoutDialog(context);
                   if (shouldlogout) {
                     await FirebaseAuth.instance.signOut();
-                    Navigator.of(context)
-                        .pushNamedAndRemoveUntil('/login/', (_) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                     loginRout,
+                      (_) => false,
+                    );
                   }
                   devtools.log(shouldlogout.toString());
                   break;
