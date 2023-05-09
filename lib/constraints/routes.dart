@@ -1,5 +1,4 @@
-const loginRout = '/login/';
-const registerRout = '/register/';
-const notesRout = '/notes/';
-
-
+const loginRoute = '/login/';
+const registerRoute = '/register/';
+const notesRoute = '/notes/';
+const verifyEmailRoute = '/verify-email';
