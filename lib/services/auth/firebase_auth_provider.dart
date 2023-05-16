@@ -1,13 +1,12 @@
-import 'dart:ffi';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:vinay_app/firebase_options.dart';
 import 'package:vinay_app/services/auth/auth_user.dart';
 import 'package:vinay_app/services/auth/auth_provider.dart';
 import 'package:vinay_app/services/auth/auth_exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
 
-class AuthService implements AuthProvider {
-  final AuthProvider provider;
-  AuthService(this.provider);
+class FirebaseAuthProvider implements AuthProvider {
   @override
   Future<AuthUser> createUser({
     required String email,
@@ -42,9 +41,7 @@ class AuthService implements AuthProvider {
   }
 
   @override
-  AuthUser? get currentUser
-  //  => provider.currentUser;
-  {
+  AuthUser? get currentUser {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       return AuthUser.fromfirebase(user);
@@ -83,23 +80,29 @@ class AuthService implements AuthProvider {
   }
 
   @override
-  Future<Void> logout() => logout();
-  // async  {
-  //   final user = FirebaseAuth.instance.currentUser;
-  //   if (user != null) {
-  //     await FirebaseAuth.instance.signOut();
-  //   } else {
-  //     throw UserNotLoggedInAuthException();
-  //   }
-  // }
+  Future<void> logout() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseAuth.instance.signOut();
+    } else {
+      throw UserNotLoggedInAuthException();
+    }
+  }
+
   @override
-  Future<Void> sendEmailVerification() => provider.sendEmailVerification();
-  // async {
-  //   final user = FirebaseAuth.instance.currentUser;
-  //   if (user != null) {
-  //     await user.sendEmailVerification();
-  //   } else {
-  //     throw UserNotLoggedInAuthException();
-  //   }
-  // }
+  Future<void> sendEmailVerification() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await user.sendEmailVerification();
+    } else {
+      throw UserNotLoggedInAuthException();
+    }
+  }
+
+  @override
+  Future<void> initialize() async {
+   await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
 }
