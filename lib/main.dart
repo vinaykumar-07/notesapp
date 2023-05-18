@@ -5,7 +5,7 @@ import 'package:vinay_app/views/login_views.dart';
 import 'package:vinay_app/views/notes_view.dart';
 import 'package:vinay_app/views/register_view.dart';
 import 'package:vinay_app/views/verify_email_view.dart';
-import 'dart:developer' as devtools show log;
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
               if (users.isEmailVerified) {
                 return const NoteView();
               } else {
-                devtools.log(users.isEmailVerified.toString());
+               
                 return const VerifyEmailView();
               }
             } else {
