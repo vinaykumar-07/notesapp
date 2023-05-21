@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vinay_app/constraints/routes.dart';
 import 'package:vinay_app/services/auth/auth_service.dart';
 import 'package:vinay_app/views/login_views.dart';
-import 'package:vinay_app/views/notes_view.dart';
+import 'package:vinay_app/views/notes/new_note_view.dart';
+import 'package:vinay_app/views/notes/notes_view.dart';
 import 'package:vinay_app/views/register_view.dart';
 import 'package:vinay_app/views/verify_email_view.dart';
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         registerRoute: (context) => const RegisterView(),
         notesRoute: (context) => const NoteView(),
         verifyEmailRoute: (context) => const VerifyEmailView(),
+        newNoteRoute:(context) => const NewNoteView(),
       },
     );
   }

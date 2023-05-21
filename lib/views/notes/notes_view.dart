@@ -1,5 +1,3 @@
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:vinay_app/constraints/routes.dart';
 import 'package:vinay_app/enums/menu_action.dart';
@@ -37,6 +35,12 @@ class _NoteViewState extends State<NoteView> {
       appBar: AppBar(
         title: const Text('Your Notes'),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(newNoteRoute);
+            },
+            icon: const Icon(Icons.add),
+          ),
           PopupMenuButton<MenuAction>(onSelected: (value) async {
             switch (value) {
               case MenuAction.logout:
